@@ -1,1 +1,117 @@
 <h1>Hello Voting System</h1>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Online Voting System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .option {
+      margin: 10px 0;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #results {
+      margin-top: 30px;
+      padding: 15px;
+      background: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .bar {
+      height: 20px;
+      background: #4CAF50;
+      text-align: right;
+      padding-right: 5px;
+      color: white;
+      border-radius: 3px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Online Voting System</h1>
+  
+  <h2>Which is your favorite programming language?</h2>
+  
+  <form id="voteForm">
+    <div class="option">
+      <input type="radio" name="language" value="JavaScript"> JavaScript
+    </div>
+    <div class="option">
+      <input type="radio" name="language" value="Python"> Python
+    </div>
+    <div class="option">
+      <input type="radio" name="language" value="Java"> Java
+    </div>
+    <div class="option">
+      <input type="radio" name="language" value="C++"> C++
+    </div>
+    <button type="submit">Submit Vote</button>
+  </form>
+
+  <div id="results" style="display:none;">
+    <h2>Voting Results</h2>
+    <div id="resultBars"></div>
+  </div>
+
+  <script>
+    const votes = {
+      "JavaScript": 0,
+      "Python": 0,
+      "Java": 0,
+      "C++": 0
+    };
+
+    const form = document.getElementById("voteForm");
+    const resultsDiv = document.getElementById("results");
+    const resultBars = document.getElementById("resultBars");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault(); 
+      
+      const selected = document.querySelector('input[name="language"]:checked');
+      if (!selected) {
+        alert("Please select an option before voting!");
+        return;
+      }
+      
+      votes[selected.value]++;
+
+      displayResults();
+    });
+
+    function displayResults() {
+      resultsDiv.style.display = "block";
+      resultBars.innerHTML = "";
+
+      const totalVotes = Object.values(votes).reduce((a, b) => a + b, 0);
+
+      for (const [lang, count] of Object.entries(votes)) {
+        const percentage = totalVotes ? Math.round((count / totalVotes) * 100) : 0;
+        const bar = document.createElement("div");
+        bar.className = "bar";
+        bar.style.width = percentage + "%";
+        bar.textContent = `${lang}: ${count} (${percentage}%)`;
+        resultBars.appendChild(bar);
+      }
+    }
+  </script>
+</body>
+</html>
